@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>FAQ Chatbot Prototype</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <main class="app-shell" aria-label="FAQ Chatbot">
+      <section class="chat-panel">
+        <header class="chat-header">
+          <div>
+            <p class="eyebrow">Strict FAQ Chatbot</p>
+            <h1>แชตบอตถามตอบข้อมูลบริการ</h1>
+          </div>
+          <span class="status" id="status">พร้อมใช้งาน</span>
+        </header>
+
+        <div class="messages" id="messages" aria-live="polite">
+          <article class="message bot">
+            <p>สวัสดีครับ สามารถสอบถามเรื่องการสมัคร เอกสาร เวลาทำการ ช่องทางติดต่อ ค่าธรรมเนียม สถานะ และการยกเลิกบริการได้ครับ</p>
+          </article>
+        </div>
+
+        <form class="composer" id="chat-form">
+          <label class="sr-only" for="message-input">พิมพ์คำถาม</label>
+          <input
+            id="message-input"
+            name="message"
+            type="text"
+            autocomplete="off"
+            placeholder="พิมพ์คำถาม เช่น สมัครยังไง"
+            maxlength="300"
+            required
+          >
+          <button type="submit" aria-label="ส่งข้อความ">ส่ง</button>
+        </form>
+      </section>
+    </main>
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>

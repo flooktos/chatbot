@@ -1,0 +1,152 @@
+{
+  "intents": [
+    {
+      "intent_id": "register_service",
+      "category": "account",
+      "status": "active",
+      "version": "1.0.0",
+      "updated_by": "prototype",
+      "updated_date": "2026-06-10",
+      "training_phrases": [
+        "สมัครยังไง",
+        "สมัครบริการ",
+        "เปิดบัญชียังไง",
+        "เริ่มใช้งานยังไง",
+        "อยากสมัครใช้บริการ"
+      ],
+      "follow_up_phrases": [],
+      "response": "ลูกค้าสามารถสมัครใช้บริการผ่านเว็บไซต์ของบริษัทได้ครับ"
+    },
+    {
+      "intent_id": "required_documents",
+      "category": "account",
+      "status": "active",
+      "version": "1.0.0",
+      "updated_by": "prototype",
+      "updated_date": "2026-06-10",
+      "training_phrases": [
+        "ใช้เอกสารอะไรบ้าง",
+        "ต้องเตรียมเอกสารอะไร",
+        "เอกสารสมัครมีอะไร",
+        "ต้องใช้บัตรประชาชนไหม"
+      ],
+      "follow_up_phrases": [
+        "ใช้เอกสารอะไรบ้าง",
+        "ต้องเตรียมอะไร",
+        "เอกสารอะไร",
+        "แล้วเอกสารล่ะ"
+      ],
+      "context_after": [
+        "register_service"
+      ],
+      "response": "โดยทั่วไปใช้บัตรประชาชนและเอกสารประกอบตามประเภทบริการครับ"
+    },
+    {
+      "intent_id": "business_hours",
+      "category": "support",
+      "status": "active",
+      "version": "1.0.0",
+      "updated_by": "prototype",
+      "updated_date": "2026-06-10",
+      "training_phrases": [
+        "เปิดกี่โมง",
+        "เวลาทำการ",
+        "ให้บริการวันไหน",
+        "ปิดกี่โมง",
+        "ติดต่อได้เวลาไหน"
+      ],
+      "follow_up_phrases": [],
+      "response": "เวลาทำการคือวันจันทร์ถึงวันศุกร์ เวลา 09:00-17:00 น. ครับ"
+    },
+    {
+      "intent_id": "contact_company",
+      "category": "support",
+      "status": "active",
+      "version": "1.0.0",
+      "updated_by": "prototype",
+      "updated_date": "2026-06-10",
+      "training_phrases": [
+        "ติดต่อบริษัท",
+        "ติดต่อเจ้าหน้าที่",
+        "ขอเบอร์ติดต่อ",
+        "ติดต่อได้ทางไหน",
+        "ช่องทางติดต่อ"
+      ],
+      "follow_up_phrases": [],
+      "response": "ลูกค้าสามารถติดต่อเจ้าหน้าที่ผ่านช่องทางติดต่อบนเว็บไซต์ของบริษัทได้ครับ"
+    },
+    {
+      "intent_id": "service_fees",
+      "category": "service",
+      "status": "active",
+      "version": "1.0.0",
+      "updated_by": "prototype",
+      "updated_date": "2026-06-10",
+      "training_phrases": [
+        "ค่าธรรมเนียมเท่าไหร่",
+        "มีค่าใช้จ่ายไหม",
+        "ราคาเท่าไหร่",
+        "เสียเงินไหม",
+        "ค่าบริการ"
+      ],
+      "follow_up_phrases": [],
+      "response": "ค่าธรรมเนียมขึ้นอยู่กับประเภทบริการ กรุณาตรวจสอบรายละเอียดจากหน้าเว็บไซต์ของบริษัทครับ"
+    },
+    {
+      "intent_id": "application_status",
+      "category": "account",
+      "status": "active",
+      "version": "1.0.0",
+      "updated_by": "prototype",
+      "updated_date": "2026-06-10",
+      "training_phrases": [
+        "ตรวจสอบสถานะสมัคร",
+        "สมัครแล้วอยู่ขั้นตอนไหน",
+        "เช็คสถานะ",
+        "สถานะใบสมัคร",
+        "สมัครผ่านหรือยัง"
+      ],
+      "follow_up_phrases": [
+        "เช็คได้ที่ไหน",
+        "ดูสถานะยังไง"
+      ],
+      "context_after": [
+        "register_service"
+      ],
+      "response": "ลูกค้าสามารถตรวจสอบสถานะการสมัครได้จากหน้าเว็บไซต์หรือช่องทางที่บริษัทกำหนดครับ"
+    },
+    {
+      "intent_id": "cancel_service",
+      "category": "service",
+      "status": "active",
+      "version": "1.0.0",
+      "updated_by": "prototype",
+      "updated_date": "2026-06-10",
+      "training_phrases": [
+        "ยกเลิกบริการ",
+        "เลิกใช้บริการ",
+        "ยกเลิกยังไง",
+        "ต้องการปิดบัญชี",
+        "ขอยกเลิก"
+      ],
+      "follow_up_phrases": [],
+      "response": "ลูกค้าสามารถยื่นคำขอยกเลิกบริการผ่านช่องทางติดต่อของบริษัทได้ครับ"
+    },
+    {
+      "intent_id": "general_help",
+      "category": "support",
+      "status": "active",
+      "version": "1.0.0",
+      "updated_by": "prototype",
+      "updated_date": "2026-06-10",
+      "training_phrases": [
+        "ช่วยอะไรได้บ้าง",
+        "สอบถามอะไรได้บ้าง",
+        "มีข้อมูลอะไร",
+        "ถามเรื่องอะไรได้"
+      ],
+      "follow_up_phrases": [],
+      "response": "ระบบสามารถตอบคำถามพื้นฐานเกี่ยวกับการสมัคร เอกสาร เวลาทำการ ช่องทางติดต่อ ค่าธรรมเนียม สถานะ และการยกเลิกบริการครับ"
+    }
+  ]
+}

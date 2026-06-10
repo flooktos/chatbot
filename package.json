@@ -1,0 +1,21 @@
+{
+  "name": "faq-chatbot-prototype",
+  "version": "1.0.0",
+  "description": "Strict Thai FAQ chatbot prototype with Express API and browser UI.",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "supertest": "^7.1.1"
+  }
+}
