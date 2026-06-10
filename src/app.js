@@ -1,4 +1,5 @@
 import express from "express";
+import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { createChatbot } from "./chatbot/engine.js";
@@ -14,7 +15,7 @@ export async function createApp(options = {}) {
   const guardrails =
     options.guardrails || (await readJsonFile(join(rootDir, "data", "guardrails.json")));
   const logger =
-    options.logger || createConversationLogger(join(rootDir, "logs", "conversations.jsonl"));
+    options.logger || createConversationLogger(getLogPath());
   const chatbot = options.chatbot || createChatbot({ knowledgeBase, guardrails, logger });
 
   const app = express();
@@ -74,3 +75,15 @@ function validateChatRequest(body) {
 
   return null;
 }
+
+function getLogPath() {
+  if (process.env.VERCEL) {
+    return join(tmpdir(), "faq-chatbot-conversations.jsonl");
+  }
+
+  return join(rootDir, "logs", "conversations.jsonl");
+}
+
+const defaultApp = await createApp();
+
+export default defaultApp;
