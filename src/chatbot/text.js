@@ -1,3 +1,12 @@
+const SYNONYM_MAP = {
+  product: "ผลิตภัณฑ์",
+  prod: "ผลิตภัณฑ์",
+  ประกัน: "ผลิตภัณฑ์",
+  สินค้า: "ผลิตภัณฑ์",
+  service: "บริการ",
+  เซอร์วิส: "บริการ",
+};
+
 export function normalizeText(value) {
   return String(value || "")
     .normalize("NFKC")
@@ -5,6 +14,13 @@ export function normalizeText(value) {
     .replace(/[^\p{L}\p{N}\s]/gu, " ")
     .replace(/\s+/g, " ")
     .trim();
+}
+
+export function expandSynonyms(text) {
+  return normalizeText(text)
+    .split(" ")
+    .map((token) => SYNONYM_MAP[token] || token)
+    .join(" ");
 }
 
 export function tokenize(value) {

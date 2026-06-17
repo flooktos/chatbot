@@ -1,6 +1,7 @@
 import { checkGuardrail } from "./guardrails.js";
 import { createSessionStore } from "./context.js";
-import { findBestIntent, findFollowUpIntent } from "./matcher.js";
+import { findFollowUpIntent } from "./matcher.js";
+import { findBestIntentHybrid } from "./matcher-ai.js";
 
 export const FALLBACK_RESPONSE =
   "ขออภัย ระบบยังไม่มีข้อมูลสำหรับคำถามนี้ครับ\nมีเรื่องอื่นที่ต้องการสอบถามเพิ่มเติมไหมครับ";
@@ -43,7 +44,7 @@ export function createChatbot({
         return response;
       }
 
-      const match = findBestIntent(message, knowledgeBase);
+      const match = await findBestIntentHybrid(message, knowledgeBase);
 
       if (match.intent) {
         sessionStore.setLastIntent(session_id, match.intent.intent_id);

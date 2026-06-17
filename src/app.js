@@ -14,9 +14,12 @@ export async function createApp(options = {}) {
     options.knowledgeBase || (await readJsonFile(join(rootDir, "data", "knowledge-base.json")));
   const guardrails =
     options.guardrails || (await readJsonFile(join(rootDir, "data", "guardrails.json")));
+  const products =
+    options.products || (await readJsonFile(join(rootDir, "data", "products.json")));
+  const mergedKnowledgeBase = mergeProductIntents(knowledgeBase, products);
   const logger =
     options.logger || createConversationLogger(getLogPath());
-  const chatbot = options.chatbot || createChatbot({ knowledgeBase, guardrails, logger });
+  const chatbot = options.chatbot || createChatbot({ knowledgeBase: mergedKnowledgeBase, guardrails, logger });
 
   const app = express();
 
@@ -82,6 +85,32 @@ function getLogPath() {
   }
 
   return join(rootDir, "logs", "conversations.jsonl");
+}
+
+function mergeProductIntents(knowledgeBase, products) {
+  const productIntents = (products.products || []).flatMap((product) => {
+    if (product.status !== "active") return [];
+    return (product.intents || []).map((intent) => ({
+      intent_id: intent.intent_id,
+      category: product.category,
+      status: product.status,
+      version: intent.version || product.version,
+      updated_by: "product_kb",
+      updated_date: product.updated_date,
+      training_phrases: intent.training_phrases,
+      follow_up_phrases: intent.follow_up_phrases || [],
+      context_after: intent.context_after || [],
+      response: intent.response,
+      product_id: product.product_id,
+      product_name_th: product.product_name_th,
+      product_name_en: product.product_name_en
+    }));
+  });
+
+  return {
+    ...knowledgeBase,
+    intents: [...knowledgeBase.intents, ...productIntents]
+  };
 }
 
 const defaultApp = await createApp();

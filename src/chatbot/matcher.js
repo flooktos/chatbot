@@ -1,4 +1,4 @@
-import { normalizeText, similarityScore } from "./text.js";
+import { expandSynonyms, normalizeText, similarityScore } from "./text.js";
 
 const DEFAULT_THRESHOLD = 0.62;
 
@@ -55,7 +55,7 @@ export function findFollowUpIntent(message, knowledgeBase, previousIntentId) {
 }
 
 function scorePhrase(message, phrase) {
-  const normalizedMessage = normalizeText(message);
+  const normalizedMessage = expandSynonyms(message);
   const normalizedPhrase = normalizeText(phrase);
 
   if (!normalizedMessage || !normalizedPhrase) {
