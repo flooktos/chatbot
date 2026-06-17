@@ -3,7 +3,10 @@ const input = document.querySelector("#message-input");
 const messages = document.querySelector("#messages");
 const status = document.querySelector("#status");
 
+const versionEl = document.querySelector("#version");
 const sessionId = getOrCreateSessionId();
+
+fetchVersion();
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -87,4 +90,14 @@ function getOrCreateSessionId() {
   const created = `session_${Date.now()}_${Math.random().toString(36).slice(2)}`;
   localStorage.setItem(key, created);
   return created;
+}
+
+async function fetchVersion() {
+  try {
+    const response = await fetch("/health");
+    const data = await response.json();
+    versionEl.textContent = `v${data.version}`;
+  } catch {
+    versionEl.textContent = "v?";
+  }
 }

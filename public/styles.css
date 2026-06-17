@@ -79,6 +79,13 @@ h1 {
   color: var(--error);
 }
 
+.version {
+  flex: 0 0 auto;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-family: "SF Mono", "Cascadia Code", "Consolas", monospace;
+}
+
 .messages {
   display: flex;
   flex-direction: column;

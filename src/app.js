@@ -1,4 +1,5 @@
 import express from "express";
+import { execSync } from "node:child_process";
 import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
@@ -8,6 +9,16 @@ import { readJsonFile } from "./loadData.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const rootDir = join(__dirname, "..");
+
+let APP_VERSION = process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 7) || "";
+
+if (!APP_VERSION) {
+  try {
+    APP_VERSION = execSync("git rev-parse --short HEAD", { encoding: "utf-8" }).trim();
+  } catch {
+    APP_VERSION = "unknown";
+  }
+}
 
 export async function createApp(options = {}) {
   const knowledgeBase =
@@ -27,7 +38,7 @@ export async function createApp(options = {}) {
   app.use(express.static(join(rootDir, "public")));
 
   app.get("/health", (_request, response) => {
-    response.json({ status: "ok" });
+    response.json({ status: "ok", version: APP_VERSION });
   });
 
   app.post("/chat", async (request, response, next) => {
