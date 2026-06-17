@@ -94,6 +94,76 @@ test("follow-up phrase can use previous session context", async () => {
   assert.equal(response.intent, "required_documents");
 });
 
+test("new intent: loan_service matches correctly", async () => {
+  const bot = createTestBot();
+
+  const response = await bot.reply({
+    session_id: "unit-loan",
+    message: "มีสินเชื่ออะไรบ้าง"
+  });
+
+  assert.equal(response.type, "answer");
+  assert.equal(response.intent, "loan_service");
+});
+
+test("new intent: promotion matches correctly", async () => {
+  const bot = createTestBot();
+
+  const response = await bot.reply({
+    session_id: "unit-promo",
+    message: "มีโปรโมชั่นอะไรบ้าง"
+  });
+
+  assert.equal(response.type, "answer");
+  assert.equal(response.intent, "promotion");
+});
+
+test("new intent: interest_rate as follow-up to loan_service", async () => {
+  const bot = createTestBot();
+
+  await bot.reply({
+    session_id: "unit-rate",
+    message: "มีสินเชื่ออะไรบ้าง"
+  });
+
+  const response = await bot.reply({
+    session_id: "unit-rate",
+    message: "ดอกเบี้ยเท่าไหร่"
+  });
+
+  assert.equal(response.type, "answer");
+  assert.equal(response.intent, "interest_rate");
+});
+
+test("new intent: payment_method matches correctly", async () => {
+  const bot = createTestBot();
+
+  const response = await bot.reply({
+    session_id: "unit-payment",
+    message: "ชำระเงินยังไง"
+  });
+
+  assert.equal(response.type, "answer");
+  assert.equal(response.intent, "payment_method");
+});
+
+test("new intent: change_plan as follow-up to register_service", async () => {
+  const bot = createTestBot();
+
+  await bot.reply({
+    session_id: "unit-change",
+    message: "สมัครยังไง"
+  });
+
+  const response = await bot.reply({
+    session_id: "unit-change",
+    message: "เปลี่ยนแผนอะไรได้บ้าง"
+  });
+
+  assert.equal(response.type, "answer");
+  assert.equal(response.intent, "change_plan");
+});
+
 test("fallback does not reset previous context", async () => {
   const bot = createTestBot();
 
