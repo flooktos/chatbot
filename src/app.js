@@ -4,7 +4,8 @@ import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { createChatbot } from "./chatbot/engine.js";
-import { createConversationLogger } from "./chatbot/logger.js";
+import { createConversationLogger, createBlobLogger } from "./chatbot/logger.js";
+import { getFallbackAnalysis } from "./analytics.js";
 import { readJsonFile } from "./loadData.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -28,8 +29,9 @@ export async function createApp(options = {}) {
   const products =
     options.products || (await readJsonFile(join(rootDir, "data", "products.json")));
   const mergedKnowledgeBase = mergeProductIntents(knowledgeBase, products);
-  const logger =
-    options.logger || createConversationLogger(getLogPath());
+  const logger = options.logger || (process.env.VERCEL && process.env.BLOB_READ_WRITE_TOKEN
+    ? createBlobLogger("conversations")
+    : createConversationLogger(getLogPath()));
   const chatbot = options.chatbot || createChatbot({ knowledgeBase: mergedKnowledgeBase, guardrails, logger });
 
   const app = express();
@@ -56,6 +58,16 @@ export async function createApp(options = {}) {
     const { session_id } = request.query;
     const suggestions = getSuggestions(session_id, chatbot, mergedKnowledgeBase);
     response.json({ suggestions });
+  });
+
+  app.get("/api/dashboard/fallback-analysis", async (_request, response, next) => {
+    try {
+      const result = await getFallbackAnalysis(getLogPath(), "conversations");
+      response.set("Cache-Control", "no-cache, must-revalidate");
+      response.json(result);
+    } catch (error) {
+      next(error);
+    }
   });
 
   app.use((error, _request, response, _next) => {

@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard — Fallback Analysis</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/dashboard.css">
+  </head>
+  <body>
+    <main class="dashboard-shell">
+      <header class="dashboard-header">
+        <h1>Dashboard — Fallback Analysis</h1>
+        <p class="dashboard-subtitle">วิเคราะห์คำถามที่ระบบไม่สามารถตอบได้</p>
+        <nav class="dashboard-nav">
+          <a href="/" class="back-link">← กลับไปแชต</a>
+        </nav>
+      </header>
+
+      <section class="summary-cards" id="summary-cards">
+        <div class="card" id="card-total">
+          <h3>Conversations ทั้งหมด</h3>
+          <p class="card-value" id="stat-total">...</p>
+        </div>
+        <div class="card card-warn" id="card-fallbacks">
+          <h3>Fallback ทั้งหมด</h3>
+          <p class="card-value" id="stat-fallbacks">...</p>
+        </div>
+        <div class="card" id="card-rate">
+          <h3>Fallback Rate</h3>
+          <p class="card-value" id="stat-rate">...</p>
+        </div>
+        <div class="card card-warn" id="card-unique">
+          <h3>คำถามที่ตอบไม่ได้</h3>
+          <p class="card-value" id="stat-unique">...</p>
+        </div>
+      </section>
+
+      <section class="section" id="section-top">
+        <h2>Top Unanswered Questions</h2>
+        <div class="table-wrapper">
+          <table class="dashboard-table" id="table-top">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>คำถาม</th>
+                <th>จำนวนครั้ง</th>
+                <th>ครั้งล่าสุด</th>
+              </tr>
+            </thead>
+            <tbody id="top-body"></tbody>
+          </table>
+        </div>
+        <p class="empty-state" id="top-empty">ไม่มีข้อมูล</p>
+      </section>
+
+      <section class="section" id="section-trend">
+        <h2>Daily Fallback Trend (30 วัน)</h2>
+        <div class="bar-chart" id="bar-chart"></div>
+        <p class="empty-state" id="trend-empty">ไม่มีข้อมูล</p>
+      </section>
+
+      <section class="section" id="section-recent">
+        <h2>Recent Fallbacks</h2>
+        <div class="table-wrapper">
+          <table class="dashboard-table" id="table-recent">
+            <thead>
+              <tr>
+                <th>เวลา</th>
+                <th>Session</th>
+                <th>คำถาม</th>
+                <th>Confidence</th>
+              </tr>
+            </thead>
+            <tbody id="recent-body"></tbody>
+          </table>
+        </div>
+        <p class="empty-state" id="recent-empty">ไม่มีข้อมูล</p>
+      </section>
+
+      <div class="loading-overlay" id="loading">
+        <p>กำลังโหลดข้อมูล...</p>
+      </div>
+      <div class="error-overlay" id="error">
+        <p class="error-text">ไม่สามารถโหลดข้อมูลได้</p>
+        <button onclick="location.reload()">ลองอีกครั้ง</button>
+      </div>
+    </main>
+    <script src="/dashboard.js" type="module"></script>
+  </body>
+</html>

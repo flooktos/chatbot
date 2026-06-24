@@ -24,6 +24,10 @@
       "dest": "src/app.js"
     },
     {
+      "src": "/api/dashboard/fallback-analysis",
+      "dest": "src/app.js"
+    },
+    {
       "src": "/(.*)",
       "dest": "public/$1"
     }

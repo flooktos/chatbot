@@ -1,0 +1,246 @@
+.dashboard-shell {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px 16px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans Thai", sans-serif;
+  color: var(--fg, #1a1a2e);
+  background: var(--bg, #f5f5fa);
+  min-height: 100vh;
+}
+
+.dashboard-header {
+  margin-bottom: 28px;
+}
+
+.dashboard-header h1 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.dashboard-subtitle {
+  margin: 4px 0 0;
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+.dashboard-nav {
+  margin-top: 8px;
+}
+
+.back-link {
+  font-size: 0.85rem;
+  color: var(--accent, #4361ee);
+  text-decoration: none;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.card {
+  background: var(--card-bg, #fff);
+  border: 1px solid var(--border, #e0e0e8);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.card h3 {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 8px;
+  opacity: 0.6;
+}
+
+.card-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--accent, #4361ee);
+}
+
+.card-warn .card-value {
+  color: var(--danger, #e63946);
+}
+
+.section {
+  margin-bottom: 28px;
+}
+
+.section h2 {
+  font-size: 1.1rem;
+  margin: 0 0 12px;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  border: 1px solid var(--border, #e0e0e8);
+  border-radius: 8px;
+  background: var(--card-bg, #fff);
+}
+
+.dashboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.dashboard-table th {
+  text-align: left;
+  padding: 10px 12px;
+  background: var(--table-header-bg, #f0f0f6);
+  border-bottom: 2px solid var(--border, #e0e0e8);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.dashboard-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border, #e0e0e8);
+}
+
+.dashboard-table tr:last-child td {
+  border-bottom: none;
+}
+
+.td-question {
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.td-count {
+  text-align: center;
+  font-weight: 600;
+}
+
+.td-time {
+  white-space: nowrap;
+  font-family: monospace;
+  font-size: 0.8rem;
+}
+
+.td-session {
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: monospace;
+  font-size: 0.8rem;
+}
+
+.td-confidence {
+  text-align: center;
+  font-family: monospace;
+}
+
+.empty-state {
+  display: none;
+  text-align: center;
+  padding: 32px;
+  opacity: 0.5;
+  font-style: italic;
+}
+
+.bar-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 200px;
+  padding: 8px 4px;
+  overflow-x: auto;
+  border: 1px solid var(--border, #e0e0e8);
+  border-radius: 8px;
+  background: var(--card-bg, #fff);
+}
+
+.bar-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  width: 24px;
+}
+
+.bar {
+  width: 20px;
+  min-height: 2px;
+  background: var(--accent, #4361ee);
+  border-radius: 3px 3px 0 0;
+  transition: height 0.3s ease;
+}
+
+.bar-label {
+  font-size: 0.6rem;
+  margin-top: 4px;
+  white-space: nowrap;
+  opacity: 0.6;
+  transform: rotate(-45deg);
+  transform-origin: left center;
+}
+
+.loading-overlay,
+.error-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 100;
+}
+
+.loading-overlay p {
+  background: var(--card-bg, #fff);
+  padding: 16px 32px;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.error-overlay {
+  flex-direction: column;
+  gap: 12px;
+}
+
+.error-text {
+  background: var(--card-bg, #fff);
+  padding: 16px 32px;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: var(--danger, #e63946);
+}
+
+.error-overlay button {
+  padding: 8px 24px;
+  border: none;
+  border-radius: 6px;
+  background: var(--accent, #4361ee);
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.error-overlay button:hover {
+  opacity: 0.85;
+}
+
+@media (prefers-color-scheme: dark) {
+  .dashboard-shell {
+    --fg: #e8e8f0;
+    --bg: #1a1a2e;
+    --card-bg: #22223a;
+    --border: #33334a;
+    --table-header-bg: #2a2a42;
+    --accent: #6c8cff;
+    --danger: #ff6b6b;
+  }
+}
