@@ -78,7 +78,7 @@ describe("computeAnalysis", () => {
     assert(result.topUnanswered[0].count >= result.topUnanswered[1].count);
   });
 
-  it("builds daily trend for last 30 days", () => {
+  it("builds daily trend for last 15 days", () => {
     const now = new Date("2026-06-24T12:00:00Z");
     const yesterday = new Date("2026-06-23T12:00:00Z");
 
@@ -93,7 +93,7 @@ describe("computeAnalysis", () => {
       })
     ];
     const result = computeAnalysis(records);
-    assert.strictEqual(result.dailyTrend.length, 30);
+    assert.strictEqual(result.dailyTrend.length, 15);
     const todayKey = "2026-06-24";
     const yesterdayKey = "2026-06-23";
     const today = result.dailyTrend.find((d) => d.date === todayKey);

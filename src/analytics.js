@@ -107,7 +107,7 @@ function groupByNormalized(questions) {
   return [...groups.values()];
 }
 
-function buildDailyTrend(fallbacks, days = 30) {
+function buildDailyTrend(fallbacks, days = 15) {
   const now = new Date();
   const today = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
   const daily = {};

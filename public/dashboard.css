@@ -351,8 +351,7 @@
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  .dashboard-shell {
+[data-theme="dark"] .dashboard-shell {
     --fg: #e8e8f0;
     --bg: #1a1a2e;
     --card-bg: #22223a;

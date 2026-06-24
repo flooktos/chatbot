@@ -1,4 +1,5 @@
 let MAX_BAR_HEIGHT = 200;
+const themeToggle = document.querySelector("#theme-toggle");
 
 function getMaxBarHeight() {
   return window.innerWidth >= 1024 ? 260 : 200;
@@ -6,6 +7,7 @@ function getMaxBarHeight() {
 
 async function init() {
   MAX_BAR_HEIGHT = getMaxBarHeight();
+  initTheme();
   showLoading(true);
   try {
     const response = await fetch("/api/dashboard/fallback-analysis");
@@ -116,12 +118,40 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
+function initTheme() {
+  const saved = localStorage.getItem("faq_chatbot_theme");
+  if (saved === "dark") {
+    document.documentElement.setAttribute("data-theme", "dark");
+    themeToggle.textContent = "☀️";
+  } else {
+    themeToggle.textContent = "🌙";
+  }
+}
+
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute("data-theme") === "dark";
+  if (isDark) {
+    html.removeAttribute("data-theme");
+    localStorage.setItem("faq_chatbot_theme", "light");
+    themeToggle.textContent = "🌙";
+  } else {
+    html.setAttribute("data-theme", "dark");
+    localStorage.setItem("faq_chatbot_theme", "dark");
+    themeToggle.textContent = "☀️";
+  }
+}
+
 function showLoading(visible) {
   document.getElementById("loading").style.display = visible ? "flex" : "none";
 }
 
 function showError(visible) {
   document.getElementById("error").style.display = visible ? "flex" : "none";
+}
+
+if (themeToggle) {
+  themeToggle.addEventListener("click", toggleTheme);
 }
 
 init();
