@@ -8,8 +8,36 @@
   --primary: #146c63;
   --primary-dark: #0f4f49;
   --bot: #eef3f2;
+  --bot-border: #dbe5e2;
   --user: #14324a;
   --error: #a83737;
+  --composer-bg: #fbfcfd;
+  --toggle-bg: #eef3f2;
+  --toggle-icon: #647084;
+  --chip-bg: #eef3f2;
+  --chip-border: #d9dee8;
+  --chip-hover: #dbe5e2;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #13151a;
+  --panel: #1b1e26;
+  --text: #e4e7ed;
+  --muted: #8b95a8;
+  --line: #2e3340;
+  --primary: #2dbfa8;
+  --primary-dark: #259e8a;
+  --bot: #262b36;
+  --bot-border: #2e3340;
+  --user: #1a3d52;
+  --error: #e05555;
+  --composer-bg: #1b1e26;
+  --toggle-bg: #262b36;
+  --toggle-icon: #8b95a8;
+  --chip-bg: #262b36;
+  --chip-border: #2e3340;
+  --chip-hover: #2e3340;
 }
 
 * {
@@ -86,6 +114,27 @@ h1 {
   font-family: "SF Mono", "Cascadia Code", "Consolas", monospace;
 }
 
+.theme-toggle {
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  min-height: auto;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  background: var(--toggle-bg);
+  border-radius: 50%;
+  font-size: 1.1rem;
+  cursor: pointer;
+  border: 0;
+  line-height: 1;
+  color: var(--toggle-icon);
+}
+
+.theme-toggle:hover {
+  background: var(--line);
+}
+
 .messages {
   display: flex;
   flex-direction: column;
@@ -110,7 +159,7 @@ h1 {
 .message.bot {
   align-self: flex-start;
   background: var(--bot);
-  border: 1px solid #dbe5e2;
+  border: 1px solid var(--bot-border);
 }
 
 .message.user {
@@ -124,13 +173,64 @@ h1 {
   font-size: 0.78rem;
 }
 
+.typing-indicator {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  padding: 6px 0;
+}
+
+.typing-indicator span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--muted);
+  animation: blink 1.4s infinite both;
+}
+
+.typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+.typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes blink {
+  0% { opacity: 0.2; }
+  20% { opacity: 1; }
+  100% { opacity: 0.2; }
+}
+
 .composer {
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 12px;
   padding: 16px;
   border-top: 1px solid var(--line);
-  background: #fbfcfd;
+  background: var(--composer-bg);
+}
+
+.quick-replies {
+  display: flex;
+  gap: 8px;
+  padding: 8px 16px;
+  overflow-x: auto;
+  border-top: 1px solid var(--line);
+  background: var(--composer-bg);
+}
+
+.quick-reply {
+  flex: 0 0 auto;
+  min-height: auto;
+  padding: 6px 14px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  background: var(--chip-bg);
+  color: var(--text);
+  border: 1px solid var(--chip-border);
+  border-radius: 20px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.quick-reply:hover {
+  background: var(--chip-hover);
 }
 
 input,

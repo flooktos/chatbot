@@ -2,10 +2,20 @@ const form = document.querySelector("#chat-form");
 const input = document.querySelector("#message-input");
 const messages = document.querySelector("#messages");
 const status = document.querySelector("#status");
-
 const versionEl = document.querySelector("#version");
+const themeToggle = document.querySelector("#theme-toggle");
+const quickReplies = document.querySelector("#quick-replies");
 const sessionId = getOrCreateSessionId();
 
+const QUICK_REPLIES = [
+  "สมัครยังไง",
+  "ใช้เอกสารอะไรบ้าง",
+  "มีผลิตภัณฑ์อะไรบ้าง",
+  "ชำระเงินช่องทางไหนได้บ้าง"
+];
+
+initTheme();
+renderQuickReplies();
 fetchVersion();
 
 form.addEventListener("submit", async (event) => {
@@ -19,13 +29,16 @@ form.addEventListener("submit", async (event) => {
   appendMessage(message, "user");
   input.value = "";
   setBusy(true);
+  showTypingIndicator();
 
   try {
     const result = await sendMessage(message);
+    hideTypingIndicator();
     appendMessage(result.response, "bot", result);
     status.textContent = "พร้อมใช้งาน";
     status.classList.remove("error");
   } catch (error) {
+    hideTypingIndicator();
     appendMessage("ขออภัย ระบบไม่สามารถตอบกลับได้ในขณะนี้ครับ", "bot");
     status.textContent = "เชื่อมต่อไม่สำเร็จ";
     status.classList.add("error");
@@ -34,6 +47,8 @@ form.addEventListener("submit", async (event) => {
     input.focus();
   }
 });
+
+themeToggle.addEventListener("click", toggleTheme);
 
 async function sendMessage(message) {
   const response = await fetch("/chat", {
@@ -79,6 +94,23 @@ function setBusy(isBusy) {
   status.textContent = isBusy ? "กำลังค้นหาคำตอบ..." : "พร้อมใช้งาน";
 }
 
+function showTypingIndicator() {
+  const article = document.createElement("article");
+  article.className = "message bot";
+  article.id = "typing-indicator";
+  const indicator = document.createElement("div");
+  indicator.className = "typing-indicator";
+  indicator.innerHTML = "<span></span><span></span><span></span>";
+  article.append(indicator);
+  messages.append(article);
+  messages.scrollTop = messages.scrollHeight;
+}
+
+function hideTypingIndicator() {
+  const el = document.getElementById("typing-indicator");
+  if (el) el.remove();
+}
+
 function getOrCreateSessionId() {
   const key = "faq_chatbot_session_id";
   const existing = localStorage.getItem(key);
@@ -99,5 +131,42 @@ async function fetchVersion() {
     versionEl.textContent = `v${data.version}`;
   } catch {
     versionEl.textContent = "v?";
+  }
+}
+
+function initTheme() {
+  const saved = localStorage.getItem("faq_chatbot_theme");
+  if (saved === "dark") {
+    document.documentElement.setAttribute("data-theme", "dark");
+    themeToggle.textContent = "☀️";
+  } else {
+    themeToggle.textContent = "🌙";
+  }
+}
+
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute("data-theme") === "dark";
+  if (isDark) {
+    html.removeAttribute("data-theme");
+    localStorage.setItem("faq_chatbot_theme", "light");
+    themeToggle.textContent = "🌙";
+  } else {
+    html.setAttribute("data-theme", "dark");
+    localStorage.setItem("faq_chatbot_theme", "dark");
+    themeToggle.textContent = "☀️";
+  }
+}
+
+function renderQuickReplies() {
+  for (const text of QUICK_REPLIES) {
+    const btn = document.createElement("button");
+    btn.className = "quick-reply";
+    btn.textContent = text;
+    btn.addEventListener("click", () => {
+      input.value = text;
+      form.requestSubmit();
+    });
+    quickReplies.append(btn);
   }
 }
