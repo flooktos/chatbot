@@ -51,6 +51,8 @@ export async function createApp(options = {}) {
   });
 
   app.get("/suggestions", (request, response) => {
+    response.set("Cache-Control", "no-cache, no-store, must-revalidate");
+    response.set("Pragma", "no-cache");
     const { session_id } = request.query;
     const suggestions = getSuggestions(session_id, chatbot, mergedKnowledgeBase);
     response.json({ suggestions });

@@ -140,7 +140,7 @@ async function fetchVersion() {
 async function fetchSuggestions() {
   const seq = ++suggestSeq;
   try {
-    const response = await fetch(`/suggestions?session_id=${encodeURIComponent(sessionId)}`);
+    const response = await fetch(`/suggestions?session_id=${encodeURIComponent(sessionId)}&_t=${Date.now()}`);
     const data = await response.json();
     if (seq === suggestSeq) {
       renderQuickReplies(data.suggestions || DEFAULT_SUGGESTIONS);
