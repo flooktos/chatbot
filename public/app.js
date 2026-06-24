@@ -7,7 +7,7 @@ const themeToggle = document.querySelector("#theme-toggle");
 const quickReplies = document.querySelector("#quick-replies");
 const sessionId = getOrCreateSessionId();
 
-const QUICK_REPLIES = [
+const DEFAULT_SUGGESTIONS = [
   "สมัครยังไง",
   "ใช้เอกสารอะไรบ้าง",
   "มีผลิตภัณฑ์อะไรบ้าง",
@@ -15,7 +15,7 @@ const QUICK_REPLIES = [
 ];
 
 initTheme();
-renderQuickReplies();
+fetchSuggestions();
 fetchVersion();
 
 form.addEventListener("submit", async (event) => {
@@ -37,6 +37,7 @@ form.addEventListener("submit", async (event) => {
     appendMessage(result.response, "bot", result);
     status.textContent = "พร้อมใช้งาน";
     status.classList.remove("error");
+    fetchSuggestions();
   } catch (error) {
     hideTypingIndicator();
     appendMessage("ขออภัย ระบบไม่สามารถตอบกลับได้ในขณะนี้ครับ", "bot");
@@ -134,6 +135,30 @@ async function fetchVersion() {
   }
 }
 
+async function fetchSuggestions() {
+  try {
+    const response = await fetch(`/suggestions?session_id=${encodeURIComponent(sessionId)}`);
+    const data = await response.json();
+    renderQuickReplies(data.suggestions || DEFAULT_SUGGESTIONS);
+  } catch {
+    renderQuickReplies(DEFAULT_SUGGESTIONS);
+  }
+}
+
+function renderQuickReplies(suggestions) {
+  quickReplies.innerHTML = "";
+  for (const text of suggestions) {
+    const btn = document.createElement("button");
+    btn.className = "quick-reply";
+    btn.textContent = text;
+    btn.addEventListener("click", () => {
+      input.value = text;
+      form.requestSubmit();
+    });
+    quickReplies.append(btn);
+  }
+}
+
 function initTheme() {
   const saved = localStorage.getItem("faq_chatbot_theme");
   if (saved === "dark") {
@@ -155,18 +180,5 @@ function toggleTheme() {
     html.setAttribute("data-theme", "dark");
     localStorage.setItem("faq_chatbot_theme", "dark");
     themeToggle.textContent = "☀️";
-  }
-}
-
-function renderQuickReplies() {
-  for (const text of QUICK_REPLIES) {
-    const btn = document.createElement("button");
-    btn.className = "quick-reply";
-    btn.textContent = text;
-    btn.addEventListener("click", () => {
-      input.value = text;
-      form.requestSubmit();
-    });
-    quickReplies.append(btn);
   }
 }

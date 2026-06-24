@@ -50,6 +50,12 @@ export async function createApp(options = {}) {
     }
   });
 
+  app.get("/suggestions", (request, response) => {
+    const { session_id } = request.query;
+    const suggestions = getSuggestions(session_id, chatbot, mergedKnowledgeBase);
+    response.json({ suggestions });
+  });
+
   app.use((error, _request, response, _next) => {
     console.error(error);
     response.status(500).json({ error: "internal_server_error" });
@@ -122,6 +128,53 @@ function mergeProductIntents(knowledgeBase, products) {
     ...knowledgeBase,
     intents: [...knowledgeBase.intents, ...productIntents]
   };
+}
+
+const DEFAULT_SUGGESTIONS = [
+  "สมัครยังไง",
+  "ใช้เอกสารอะไรบ้าง",
+  "มีผลิตภัณฑ์อะไรบ้าง",
+  "ชำระเงินช่องทางไหนได้บ้าง"
+];
+
+function getSuggestions(sessionId, chatbot, knowledgeBase, maxCount = 4) {
+  if (!sessionId) {
+    return DEFAULT_SUGGESTIONS;
+  }
+
+  const session = chatbot.sessionStore.get(sessionId);
+  const lastIntentId = session?.last_intent;
+
+  if (!lastIntentId) {
+    return DEFAULT_SUGGESTIONS;
+  }
+
+  const intents = knowledgeBase.intents || [];
+  const followUpIntents = intents.filter(
+    intent => intent.context_after?.includes(lastIntentId)
+  );
+
+  const phrases = [];
+
+  for (const intent of followUpIntents) {
+    for (const phrase of (intent.follow_up_phrases || [])) {
+      if (!phrases.includes(phrase) && phrases.length < maxCount) {
+        phrases.push(phrase);
+      }
+    }
+  }
+
+  if (phrases.length < maxCount) {
+    for (const intent of followUpIntents) {
+      for (const phrase of (intent.training_phrases || [])) {
+        if (!phrases.includes(phrase) && phrases.length < maxCount) {
+          phrases.push(phrase);
+        }
+      }
+    }
+  }
+
+  return phrases.length > 0 ? phrases : DEFAULT_SUGGESTIONS;
 }
 
 const defaultApp = await createApp();
