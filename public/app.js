@@ -14,6 +14,8 @@ const DEFAULT_SUGGESTIONS = [
   "ชำระเงินช่องทางไหนได้บ้าง"
 ];
 
+let suggestSeq = 0;
+
 initTheme();
 fetchSuggestions();
 fetchVersion();
@@ -136,12 +138,17 @@ async function fetchVersion() {
 }
 
 async function fetchSuggestions() {
+  const seq = ++suggestSeq;
   try {
     const response = await fetch(`/suggestions?session_id=${encodeURIComponent(sessionId)}`);
     const data = await response.json();
-    renderQuickReplies(data.suggestions || DEFAULT_SUGGESTIONS);
+    if (seq === suggestSeq) {
+      renderQuickReplies(data.suggestions || DEFAULT_SUGGESTIONS);
+    }
   } catch {
-    renderQuickReplies(DEFAULT_SUGGESTIONS);
+    if (seq === suggestSeq) {
+      renderQuickReplies(DEFAULT_SUGGESTIONS);
+    }
   }
 }
 
