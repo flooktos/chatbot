@@ -1,6 +1,11 @@
-const MAX_BAR_HEIGHT = 180;
+let MAX_BAR_HEIGHT = 200;
+
+function getMaxBarHeight() {
+  return window.innerWidth >= 1024 ? 260 : 200;
+}
 
 async function init() {
+  MAX_BAR_HEIGHT = getMaxBarHeight();
   showLoading(true);
   try {
     const response = await fetch("/api/dashboard/fallback-analysis");
@@ -66,7 +71,8 @@ function renderBarChart(dailyTrend) {
     .map(
       (d) =>
         `<div class="bar-item" title="${d.date}: ${d.count} fallback(s)">
-          <div class="bar" style="height: ${Math.round((d.count / maxCount) * MAX_BAR_HEIGHT)}px"></div>
+          <span class="bar-value">${d.count > 0 ? d.count : ""}</span>
+          <div class="bar" style="height: ${Math.max(Math.round((d.count / maxCount) * MAX_BAR_HEIGHT), 2)}px"></div>
           <span class="bar-label">${d.date.slice(5)}</span>
         </div>`
     )

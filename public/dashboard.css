@@ -39,7 +39,7 @@
 
 .summary-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 12px;
   margin-bottom: 28px;
 }
@@ -47,12 +47,13 @@
 .card {
   background: var(--card-bg, #fff);
   border: 1px solid var(--border, #e0e0e8);
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 16px;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 .card h3 {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -83,7 +84,7 @@
 .table-wrapper {
   overflow-x: auto;
   border: 1px solid var(--border, #e0e0e8);
-  border-radius: 8px;
+  border-radius: 10px;
   background: var(--card-bg, #fff);
 }
 
@@ -112,7 +113,7 @@
 }
 
 .td-question {
-  max-width: 300px;
+  max-width: 260px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -130,7 +131,7 @@
 }
 
 .td-session {
-  max-width: 160px;
+  max-width: 140px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -151,16 +152,33 @@
   font-style: italic;
 }
 
+.chart-container {
+  overflow-x: auto;
+  border: 1px solid var(--border, #e0e0e8);
+  border-radius: 10px;
+  background: var(--card-bg, #fff);
+  position: relative;
+}
+
 .bar-chart {
   display: flex;
   align-items: flex-end;
-  gap: 3px;
-  height: 200px;
-  padding: 8px 4px;
-  overflow-x: auto;
-  border: 1px solid var(--border, #e0e0e8);
-  border-radius: 8px;
-  background: var(--card-bg, #fff);
+  gap: 4px;
+  height: 220px;
+  padding: 16px 8px 0;
+  min-width: 240px;
+}
+
+/* horizontal grid lines drawn via gradient background */
+.bar-chart {
+  background-image:
+    repeating-linear-gradient(
+      to top,
+      transparent,
+      transparent calc(25% - 1px),
+      var(--chart-grid, rgba(0,0,0,0.06)) calc(25% - 1px),
+      var(--chart-grid, rgba(0,0,0,0.06)) 25%
+    );
 }
 
 .bar-item {
@@ -168,24 +186,35 @@
   flex-direction: column;
   align-items: center;
   flex-shrink: 0;
-  width: 24px;
+  width: 26px;
+  position: relative;
 }
 
 .bar {
-  width: 20px;
+  width: 22px;
   min-height: 2px;
   background: var(--accent, #4361ee);
-  border-radius: 3px 3px 0 0;
+  border-radius: 4px 4px 0 0;
   transition: height 0.3s ease;
+  flex-shrink: 0;
+}
+
+.bar-value {
+  font-size: 0.6rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 3px;
+  opacity: 0.65;
+  white-space: nowrap;
 }
 
 .bar-label {
   font-size: 0.6rem;
-  margin-top: 4px;
+  margin-top: 6px;
   white-space: nowrap;
   opacity: 0.6;
-  transform: rotate(-45deg);
-  transform-origin: left center;
+  text-align: center;
+  line-height: 1.1;
 }
 
 .loading-overlay,
@@ -233,6 +262,95 @@
   opacity: 0.85;
 }
 
+@media (min-width: 1024px) {
+  .dashboard-shell {
+    max-width: 1200px;
+    padding: 36px 48px;
+  }
+
+  .dashboard-header h1 {
+    font-size: 1.75rem;
+  }
+
+  .summary-cards {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+
+  .card {
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+
+  .card:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+  }
+
+  .card-value {
+    font-size: 2rem;
+  }
+
+  .section h2 {
+    font-size: 1.2rem;
+  }
+
+  .bar-chart {
+    height: 280px;
+    gap: 6px;
+    padding: 20px 16px 0;
+    min-width: 300px;
+  }
+
+  .bar-item {
+    width: 36px;
+  }
+
+  .bar {
+    width: 30px;
+    border-radius: 6px 6px 0 0;
+  }
+
+  .bar-value {
+    font-size: 0.7rem;
+    margin-bottom: 4px;
+    opacity: 0.8;
+  }
+
+  .bar-label {
+    font-size: 0.7rem;
+    margin-top: 8px;
+  }
+
+  .dashboard-table {
+    font-size: 0.9rem;
+  }
+
+  .dashboard-table th {
+    padding: 12px 20px;
+  }
+
+  .dashboard-table td {
+    padding: 10px 20px;
+  }
+
+  .dashboard-table tbody tr:nth-child(even) {
+    background: var(--table-stripe, rgba(0, 0, 0, 0.02));
+  }
+
+  .dashboard-table tbody tr:hover {
+    background: var(--table-hover, rgba(0, 0, 0, 0.04));
+  }
+
+  .td-question {
+    max-width: 400px;
+  }
+
+  .td-session {
+    max-width: 200px;
+  }
+}
+
 @media (prefers-color-scheme: dark) {
   .dashboard-shell {
     --fg: #e8e8f0;
@@ -242,5 +360,8 @@
     --table-header-bg: #2a2a42;
     --accent: #6c8cff;
     --danger: #ff6b6b;
+    --chart-grid: rgba(255, 255, 255, 0.06);
+    --table-stripe: rgba(255, 255, 255, 0.03);
+    --table-hover: rgba(255, 255, 255, 0.06);
   }
 }
